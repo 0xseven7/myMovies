@@ -1,0 +1,45 @@
+<!doctype>
+ <html lang="en">
+ <head>
+     <meta charset="UTF-8">
+     <title>Document</title>
+ </head>
+ <body>
+ <% include ../layout.ejs %>
+ <div class="container">
+        <div class="row">
+            <table class="table table-hover table-bordered">
+                <thead>
+                <tr>
+                    <th>电影名字</th>
+                    <th>评分</th>
+                    <th>导演</th>
+                    <th>国家</th>
+                    <th>上映时间</th>
+                    <!--<th>录入时间</th>-->
+                    <th>查看</th>
+                    <th>更新</th>
+                    <th>删除</th>
+                </tr>
+                </thead>
+
+                <tbody>
+                <% movies.forEach(function (item) { %>
+                    <tr class="item-id-<%= item._id %>">
+                    <td><%= item.title %></td>
+                    <td><%= item.rating %></td>
+                    <td><%= item.director %></td>
+                    <td><%= item.contry %></td>
+                    <td><%= item.year %></td>
+                    <td><a href="../movie/<%= item._id %>">查看</a></td>
+                    <td><a href="../admin/update/<%= item._id %>">更新</a></td>
+                    <td><button class="btn btn-danger del" type="button" data-id="<%= item._id %>">删除</button></td>
+                    <% }) %>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+       <script type="text/javascript" src="/javascripts/admin.js"></script>
+ </body>
+ </html>
