@@ -1,29 +1,29 @@
 let express = require('express');
 let router = express.Router();
-let Movie = require('../models/movies');
 let underScore = require('underscore');
-let User = require('../models/userModel');
-
+let userRoutes = require('./userRoutes');
+let Movie = require('../models/movies');
 // pre handle user
-router.use(function (req, res, next) {
-  res.locals.user = req.session.user;
-  return next();
-});
+// router.use(userRoutes.getUser);
 
+router.post('/login', userRoutes.login);
+router.post('/signup', userRoutes.signup);
+router.get('/logoum', userRoutes.logout);
+router.get('/admin/userlist', userRoutes.userList);
 
-/* GET home page. */
-router.get('/', function (req, res, next) {
-  console.log(req.session.user);
+router.get('/', function (req, res) {
+  console.log('1');
   Movie.fetch(function (err, movies) {
     if (err) {
-      return next(err);
+      console.log(err);
     }
     res.render('index', {
-      title: '首页',
       movies: movies,
-    });
-  });
+      title: '首页'
+    })
+  })
 });
+
 // detail页面
 router.get('/movie/:id', function (req, res) {
   let id = req.params.id;
@@ -126,60 +126,5 @@ router.delete('/admin/list', function (req, res) {
     })
   }
 });
-router.post('/user/signup', function (req, res) {
-  let userObj = req.body.user;
-  User.find({username: userObj.username}, function (err, _user) {
-    if (err) {
-      console.log(err);
-    }
-    if (!_user.length) {
-      let user = new User(userObj);
-      user.save(function (err, _user) {
-        if (err) {
-          console.log(err);
-        }
-        res.redirect('/admin/userlist');
-      })
-    } else {
-      console.log('Username has already been token!');
-      res.redirect('/admin/userlist');
-    }
-  });
 
-});
-router.get('/admin/userlist', function (req, res) {
-  User.fetch(function (err, users) {
-    if (err) {
-      console.log(err);
-    }
-    res.render('userlist', {
-      title: 'userlist',
-      users: users
-    })
-  })
-});
-router.post("/user/signin", function (req, res) {
-  let userObj = req.body.user;
-  User.findOne({username: userObj.username}, function (err, _user) {
-    if (err) {
-      console.log(err);
-    }
-    _user.comparePassword(userObj.password, function (err, match) {
-      if (err) {
-        console.log(err);
-      }
-      if (match) {
-        req.session.user = _user;
-        return res.redirect('/');
-      } else {
-        console.log('Password is not');
-      }
-    })
-  });
-});
-// logout
-router.get('/logout', function (req, res) {
-  req.session.user = res.locals.user = '';
-  res.redirect('/');
-});
 module.exports = router;

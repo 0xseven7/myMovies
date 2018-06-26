@@ -1,4 +1,6 @@
 let mongoose = require('mongoose');
+mongoose.connect('mongodb://localhost/myMovies');
+
 let MovieSchema = new mongoose.Schema({
   derector: String,
   title: String,

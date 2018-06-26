@@ -2,7 +2,7 @@
  <html lang="en">
  <head>
      <meta charset="UTF-8">
-     <title><%= title %></title>
+     <title>Document</title>
  </head>
  <body>
  <% include ../layout.ejs %>
@@ -11,18 +11,17 @@
             <table class="table table-hover table-bordered">
                 <thead>
                 <tr>
-                    <th>用户名</th>
+                    <th>名字</th>
                     <th>密码</th>
                 </tr>
                 </thead>
 
                 <tbody>
                 <% users.forEach(function (item) { %>
-                <tr class="item-id-<%= item.user %>">
-                        <td><%= item.username %></td>
-                        <td><%= item.password %></td>
+                    <tr class="item-id-<%= item._id %>">
+                    <td><%= item.username %></td>
+                    <td><%= item.password %></td>
                     </tr>
-
                 <% }) %>
                 </tbody>
             </table>

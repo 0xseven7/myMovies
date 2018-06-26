@@ -3,20 +3,16 @@
   "description": "a simple movie site",
   "main": "",
   "license": "MIT",
-  "homepage": "https://github.com/zhangchenxu/myMovies",
+  "homepage": "",
   "ignore": [
     "**/.*",
     "node_modules",
     "bower_components",
     "test",
-    "tests",
-    "public/lib"
+    "tests"
   ],
   "dependencies": {
     "jquery": "^3.3.1",
     "bootstrap": "^4.1.1"
-  },
-  "authors": [
-    "zhangchenxu <zhangxu1161@gmail.com>"
-  ]
+  }
 }
