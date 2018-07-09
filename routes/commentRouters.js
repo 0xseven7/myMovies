@@ -1,9 +1,15 @@
-var express = require('express');
-var router = express.Router();
+let Comment  = require('../models/comment');
 
-/* GET users listing. */
-router.get('/', function(req, res, next) {
-  res.send('respond with a resource');
-});
+exports.save = function (req, res) {
+  let _comment = req.body.comment;
 
-module.exports = router;
+  let movieId = _comment.movie;
+  let comment = new Comment(_comment);
+
+  comment.save(function (err, comment) {
+    if (err) {
+      console.log(err);
+    }
+    res.redirect('/movie/' + movieId);
+  })
+};

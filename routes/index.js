@@ -2,129 +2,45 @@ let express = require('express');
 let router = express.Router();
 let underScore = require('underscore');
 let userRoutes = require('./userRoutes');
-let Movie = require('../models/movies');
+let movieRouters = require('./movieRouters');
+let commentRouter = require('./commentRouters');
 // pre handle user
-// router.use(userRoutes.getUser);
+router.use(userRoutes.getUser);
 
-router.post('/login', userRoutes.login);
-router.post('/signup', userRoutes.signup);
-router.get('/logoum', userRoutes.logout);
-router.get('/admin/userlist', userRoutes.userList);
+router.get('/', movieRouters.index);
+// user router
+router.post('/user/login', userRoutes.login);
+router.post('/user/signup', userRoutes.signup);
 
-router.get('/', function (req, res) {
-  console.log('1');
-  Movie.fetch(function (err, movies) {
-    if (err) {
-      console.log(err);
-    }
-    res.render('index', {
-      movies: movies,
-      title: '首页'
-    })
-  })
-});
+router.get('/showLogin', userRoutes.showLogin);
+router.get('/showSignup', userRoutes.showSignup);
 
-// detail页面
-router.get('/movie/:id', function (req, res) {
-  let id = req.params.id;
-  Movie.findById(id, function (err, movie) {
-    res.render('detail', {
-      title: '详情页',
-      movie: movie
-    });
-  });
+router.get('/logout', userRoutes.logout);
+router.get('/admin/userlist', userRoutes.loginRequired, userRoutes.adminRequired, userRoutes.userList);
 
-});
-// admin 页面
-router.get('/admin/movie', function (req, res) {
-  res.render('admin', {
-    title: 'admin页面',
-    movie: {
-      title: '',
-      country: '',
-      rating: '',
-      director: '',
-      language: '',
-      year: '',
-      description: '',
-      flash: ''
-    }
 
-  });
-});
-// list 页面
-router.get('/admin/list', function (req, res) {
-  Movie.fetch(function (err, movies) {
-    if (err) {
-      console.log(err);
-    }
-    res.render('list', {
-      title: 'list',
-      movies: movies
-    })
-  })
+//movie router
+// detail 页面
+// get('/movie/:id',
+router.get('/movie/:id', movieRouters.detail);
+// admin 页面  get('/admin/movie',
+router.get('/admin/movie', userRoutes.loginRequired, userRoutes.adminRequired, movieRouters.admin);
 
-});
-router.post('/admin/movie/new', function (req, res) {
-  let id = req.body.movie._id;
-  let movieObj = req.body.movie;
-  let _movie;
-  if (!id) {
-    _movie = new Movie({
-      title: movieObj.title,
-      description: movieObj.description,
-      year: movieObj.year,
-      rating: movieObj.rating,
-      poster: movieObj.poster,
-      flash: movieObj.flash,
-      director: movieObj.director,
-      country: movieObj.country
-    });
-    _movie.save(function (err, movie) {
-      if (err) {
-        console.log(err);
-      }
-      res.redirect('/movie/' + movie._id);
-    });
-  } else {
-    Movie.findById(id, function (err, movie) {
-      if (err) {
-        console.log(err);
-      }
-      _movie = underScore.extend(movie, movieObj);
-      _movie.save(function (err, movie) {
-        if (err) {
-          console.log(err);
-        }
-        res.redirect('/movie/' + movie._id);
-      });
-    });
-  }
-});
-router.get('/admin/update/:id', function (req, res) {
-  let id = req.params.id;
-  if (id) {
-    Movie.findById(id, function (err, movie) {
-      res.render('admin', {
-        title: '后台录入页',
-        movie: movie
-      });
-    });
-  }
-});
-router.delete('/admin/list', function (req, res) {
-  let id = req.query.id;
-  if (id) {
-    Movie.remove({_id: id}, function (err) {
-      if (err) {
-        console.log(err);
-      } else {
-        res.json({
-          success: 1
-        })
-      }
-    })
-  }
-});
+// list 页面get('/admin/list'
+router.get('/admin/list', userRoutes.loginRequired, userRoutes.adminRequired, movieRouters.list);
+// 添加新电影
+// post('/admin/movie/new',
+router.post('/admin/movie/new', userRoutes.loginRequired, userRoutes.adminRequired, movieRouters.new);
+// 获取更新页面
+// get('/admin/update/:id',
+router.post('/admin/movie/:id', userRoutes.loginRequired, userRoutes.adminRequired, movieRouters.update);
+// 删除电影
+//  delete('/admin/list',
+router.delete('/admin/list', userRoutes.loginRequired, userRoutes.adminRequired, movieRouters.list);
 
+
+
+// comment routers
+
+router.post('/user/comment', userRoutes.loginRequired, commentRouter.save);
 module.exports = router;

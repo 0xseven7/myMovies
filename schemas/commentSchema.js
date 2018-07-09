@@ -2,7 +2,7 @@ let mongoose = require('mongoose');
 let Schema = mongoose.Schema;
 
 let ObjId = Schema.Types.ObjectId;
-let MovieSchema = new mongoose.Schema({
+let CommentSchema = new mongoose.Schema({
   movie: {
     type: ObjId,
     ref: 'Movie'
@@ -25,7 +25,7 @@ let MovieSchema = new mongoose.Schema({
 //     this.meta.updateAt = Date.now();
 //   }
 // });
-MovieSchema.statics = {
+CommentSchema.statics = {
   fetch: function (cb) {
     return this
       .find({})
@@ -39,4 +39,4 @@ MovieSchema.statics = {
   }
 };
 
-module.exports = mongoose.model('Movie', MovieSchema);
+module.exports = CommentSchema;

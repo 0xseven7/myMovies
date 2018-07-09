@@ -4,8 +4,13 @@ let path = require('path');
 let cookieParser = require('cookie-parser');
 let logger = require('morgan');
 let indexRouter = require('./routes/index');
-let usersRouter = require('./routes/users');
 let bodyParser = require('body-parser');
+
+let expressSession = require('express-session');
+let mongoStore = require('connect-mongo')(expressSession);
+let mongoose = require('mongoose');
+let mongodUrl = 'mongodb://localhost/myMovies';
+mongoose.connect(mongodUrl);
 let app = express();
 
 // view engine setup
@@ -14,11 +19,19 @@ app.set('view engine', 'ejs');
 app.use(logger('dev'));
 app.use(express.json());
 //
-app.use(express.urlencoded({ extended: true }));
+app.use(express.urlencoded({
+  extended: true
+}));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(expressSession({
+  secret: 'myMovie',
+  store: new mongoStore({
+    url: mongodUrl,
+    collection: 'sessions'
+  })
+}));
 app.use('/', indexRouter);
-app.use('/users', usersRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
