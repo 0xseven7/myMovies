@@ -11,10 +11,11 @@ let CommentSchema = new mongoose.Schema({
     type: ObjId,
     ref: 'User'
   },
-  to: {
-    type: ObjId,
-    ref: 'User'
-  },
+  reply: [{
+    to: {type: ObjId, ref: 'User'},
+    from: {type: ObjId, ref: 'User'},
+    content: String
+  }],
   content: String
 
 });

@@ -33,10 +33,10 @@ router.get('/admin/list', userRoutes.loginRequired, userRoutes.adminRequired, mo
 router.post('/admin/movie/new', userRoutes.loginRequired, userRoutes.adminRequired, movieRouters.new);
 // 获取更新页面
 // get('/admin/update/:id',
-router.post('/admin/movie/:id', userRoutes.loginRequired, userRoutes.adminRequired, movieRouters.update);
+router.get('/admin/update/:id', userRoutes.loginRequired, userRoutes.adminRequired, movieRouters.update);
 // 删除电影
 //  delete('/admin/list',
-router.delete('/admin/list', userRoutes.loginRequired, userRoutes.adminRequired, movieRouters.list);
+router.delete('/admin/list', userRoutes.loginRequired, userRoutes.adminRequired, movieRouters.delete);
 
 
 
