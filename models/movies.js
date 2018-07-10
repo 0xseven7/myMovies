@@ -1,7 +1,7 @@
 let mongoose = require('mongoose');
 
 let MovieSchema = new mongoose.Schema({
-  derector: String,
+  director: String,
   title: String,
   poster: String,
   rating: String,
@@ -9,6 +9,7 @@ let MovieSchema = new mongoose.Schema({
   year: Number,
   description: String,
   flash: String,
+  language: String
   // meta: {
   //   createAt: {
   //     type: Date,

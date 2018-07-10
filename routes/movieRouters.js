@@ -1,5 +1,6 @@
 let Movie = require('../models/movies');
 let Comment = require('../models/comment');
+let underScore = require('underscore');
 exports.index = function (req, res) {
   console.log('1');
   Movie.fetch(function (err, movies) {
@@ -12,18 +13,21 @@ exports.index = function (req, res) {
     });
   });
 };
-//movie router
+//movie router1
 // detail 页面
 // get('/movie/:id',
 exports.detail = function (req, res) {
   let id = req.params.id;
   Movie.findById(id, function (err, movie) {
-    Comment.find({movie: id}, function (err, comment) {
-      console.log(comment);
-      res.render('detail', {
+    Comment
+      .find({movie: id})
+      .populate('from', 'username')
+      .populate('reply.from  reply.to', 'username')
+      .exec(function (err, comments) {
+        res.render('detail', {
         title: '详情页',
         movie: movie,
-        comment: comment
+        comments: comments
       });
     });
   });
