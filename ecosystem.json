@@ -2,7 +2,7 @@
     "apps": [
         {
             "name": "myMovies",
-            "script": "/bin/www",
+            "script": "./bin/www",
             "env": {
                 "COMMOM_VRIABLE": "true"
             },
