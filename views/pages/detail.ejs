@@ -47,14 +47,19 @@
                           <p><%= comment.content %></p>
                           <% if (comment.reply && comment.reply.length > 0) { %>
                           <% comment.reply.forEach(function (reply) { %>
-                            <div class="media">
+                          <div class="media">
                                 <div class="media-left">
-                                <a href="#comments" data-cid="<%= reply._id %>" data-tid="<%= reply.from._id %>" class="comment">
-                                <img src="/images/avater.jpeg" alt="" width="32" height="32" class="media-object">
+                                <a href="#comments" data-cid="<%= comment._id %>" data-tid="<%= reply.from._id %>" class="comment">
+                                    <img src="/images/avater.jpeg" alt="" width="32" height="32" class="media-object">
                                 </a>
                                 </div>
                                 <div class="media-body">
-                                    <h4 class="media-heading"><%= reply.from.username %></h4>
+                                    <h4 class="media-heading">
+                                        <%= reply.from.username %>
+
+                                        <span class="text-info">&nbsp;&nbsp;回复：</span>
+                                        <%= reply.to.username %>
+                                    </h4>
                                     <p><%= reply.content %></p>
                                 </div>
                             </div>
@@ -67,14 +72,19 @@
                   <div id="comments">
                       <form action="/user/comment" method="post" role="form" id="commentForm">
                         <input type="hidden" name="comment[movie]" value="<%= movie._id %>">
-                        <input type="hidden" name="comment[from]" value="<%= user._id %>">
-                        <textarea name="comment[content]" rows="3" class="form-control"></textarea>
-                        <button type="submit" class="btn btn-primary">提交</button>
+                          <% if (user) { %>
+                          <input type="hidden" name="comment[from]" value="<%= user._id %>">
+                          <% } %>
+                          <textarea name="comment[content]" rows="3" class="form-control"></textarea>
+                          <% if (user) { %>
+                          <button type="submit" class="btn btn-primary">提交</button>
+                          <% } else { %>
+                          <a href="#loginModal" class="nav-link" data-toggle="modal">登录</a>后才可参与评论~
+                          <% } %>
                       </form>
                   </div>
               </div>
           </div>
-      
   </div>
   <script type="text/javascript" src="/javascripts/detail.js"></script>
   </body>
