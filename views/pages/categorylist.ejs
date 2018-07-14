@@ -1,0 +1,34 @@
+<!doctype>
+ <html lang="en">
+ <head>
+     <meta charset="UTF-8">
+     <title>Document</title>
+ </head>
+ <body>
+ <% include ../layout.ejs %>
+ <div class="container">
+        <div class="row">
+            <table class="table table-hover table-bordered">
+                <thead>
+                <tr>
+                    <th>类名</th>
+                    <th>描述</th>
+                    <th>refs</th>
+                    <!--<th>录入时间</th>-->
+                    <th>删除</th>
+                </tr>
+                </thead>
+
+                <tbody>
+                <% catetoties.forEach(function (cat) { %>
+                    <td><%= cat.name %></td>
+                    <td><%= cat.rating %></td>
+                    <td><button class="btn btn-danger del" type="button" data-id="<%= cat._id %>">删除</button></td>
+                    <% }) %>
+                </tbody>
+            </table>
+        </div>
+    </div>
+ <script type="text/javascript" src="/javascripts/admin.js"></script>
+ </body>
+ </html>
